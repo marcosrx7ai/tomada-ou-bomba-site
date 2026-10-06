@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Calculadora Tomada ou Bomba: elétrico ou gasolina?">
+<meta property="og:description" content="A conta de 5 anos com os preços da sua cidade.">
+<meta name="theme-color" content="#0e1013">
+<title>Calculadora Tomada ou Bomba</title>
+<meta name="description" content="Faça a conta de 5 anos com os preços da sua cidade: carro elétrico ou a gasolina? Calculadora do canal Tomada ou Bomba.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#f4f2ed; --card:#ffffff; --ink:#15171a; --muted:#5b5f66; --line:#dcd8cf; --tomada:#15803d; --tomada-bg:#dcfce7; --bomba:#c2410c; --bomba-bg:#ffedd5; --campo:#f8f7f3; --foco:#15171a; color-scheme:light }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0e1013; --card:#171a1f; --ink:#eef0f2; --muted:#a2a8b1; --line:#2b3038; --tomada:#4ade80; --tomada-bg:#12301d; --bomba:#fb923c; --bomba-bg:#3a1f0e; --campo:#1f2329; --foco:#eef0f2; color-scheme:dark } }
+:root[data-theme="dark"] { --bg:#0e1013; --card:#171a1f; --ink:#eef0f2; --muted:#a2a8b1; --line:#2b3038; --tomada:#4ade80; --tomada-bg:#12301d; --bomba:#fb923c; --bomba-bg:#3a1f0e; --campo:#1f2329; --foco:#eef0f2; color-scheme:dark }
+* { box-sizing:border-box }
+body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.5 Barlow, "Segoe UI", Arial, sans-serif; padding-inline:16px; padding-block:20px 110px }
+main { max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:16px }
+.marca { display:flex; align-items:center; gap:10px; font:800 15px "Barlow Condensed", Arial, sans-serif; letter-spacing:.12em; text-transform:uppercase; color:var(--muted) }
+.marca i { width:12px; height:12px; border-radius:3px; background:var(--tomada) } .marca i + i { background:var(--bomba) }
+h1 { font:800 clamp(32px,7.5vw,48px)/1 "Barlow Condensed", Arial, sans-serif; margin:4px 0 6px; text-wrap:balance }
+h1 .t { color:var(--tomada) } h1 .b { color:var(--bomba) }
+.lead { margin:0; color:var(--muted); max-width:60ch }
+.card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px; display:flex; flex-direction:column; gap:14px }
+.passo { display:flex; align-items:center; gap:10px; font:800 21px/1.1 "Barlow Condensed", Arial, sans-serif; letter-spacing:.02em }
+.passo b { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:var(--ink); color:var(--card); font-size:17px; flex:none }
+.passo small { display:block; font:500 14px Barlow, Arial, sans-serif; color:var(--muted); letter-spacing:0; margin-top:2px }
+.campos { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px }
+.campo { display:flex; flex-direction:column; gap:5px; min-width:0 }
+.campo > span { font:700 14px Barlow, Arial, sans-serif; color:var(--muted) }
+.caixa { display:flex; align-items:center; gap:6px; border:1.5px solid var(--line); background:var(--campo); border-radius:12px; padding:0 12px; transition:border-color .15s }
+.caixa:focus-within { border-color:var(--foco) }
+.caixa i { font:600 15px "IBM Plex Mono", monospace; font-style:normal; color:var(--muted); flex:none }
+.caixa input { flex:1; min-width:0; border:0; background:transparent; color:var(--ink); font:600 22px "IBM Plex Mono", monospace; padding:10px 0; outline:none; font-variant-numeric:tabular-nums }
+.dica { font-size:13.5px; color:var(--muted); margin:0 }
+.chips { display:flex; gap:6px; flex-wrap:wrap }
+.chips button { font:700 13.5px Barlow, Arial, sans-serif; padding:6px 11px; border-radius:999px; border:1.5px solid var(--line); background:transparent; color:var(--ink); cursor:pointer }
+.chips button[aria-pressed=true] { background:var(--ink); color:var(--card); border-color:var(--ink) }
+.km .linha { display:flex; align-items:baseline; gap:8px }
+.km output { font:600 46px/1 "IBM Plex Mono", Consolas, monospace; font-variant-numeric:tabular-nums } .km .u { font:700 18px Barlow, Arial, sans-serif; color:var(--muted) }
+input[type=range] { width:100%; accent-color:var(--ink); height:28px }
+.marcas { display:flex; justify-content:space-between; font:500 13px "IBM Plex Mono", monospace; color:var(--muted) }
+.res { border-radius:18px; padding:20px; display:flex; flex-direction:column; gap:6px; border:2px solid; transition:background .2s, border-color .2s }
+.res.t { background:var(--tomada-bg); border-color:var(--tomada) } .res.b { background:var(--bomba-bg); border-color:var(--bomba) }
+.res small { font:800 14px "Barlow Condensed", Arial, sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--muted) }
+.res .ganha { font:800 clamp(44px,12vw,68px)/1 "Barlow Condensed", Arial, sans-serif }
+.res.t .ganha { color:var(--tomada) } .res.b .ganha { color:var(--bomba) }
+.res .val { font:600 22px "IBM Plex Mono", monospace; font-variant-numeric:tabular-nums }
+.res p { margin:4px 0 0 }
+.conta { width:100%; border-collapse:collapse; font-size:16px } .conta td { padding:8px 0; border-bottom:1px solid var(--line); vertical-align:top }
+.conta td + td { text-align:right; font:600 16px "IBM Plex Mono", monospace; font-variant-numeric:tabular-nums; white-space:nowrap; padding-left:12px }
+.conta tr.tot td { border-bottom:0; font-weight:700 } .pos { color:var(--tomada) } .neg { color:var(--bomba) }
+.conta small { display:block; color:var(--muted); font-size:13.5px }
+details summary { cursor:pointer; font:800 18px "Barlow Condensed", Arial, sans-serif; letter-spacing:.04em }
+details .campos { margin-top:12px }
+.acoes { display:flex; gap:10px; flex-wrap:wrap }
+.acoes button { font:700 15px Barlow, Arial, sans-serif; padding:11px 16px; border-radius:12px; border:0; background:var(--ink); color:var(--card); cursor:pointer } .acoes button.sec { background:transparent; color:var(--ink); border:1.5px solid var(--line) }
+.nota { font-size:14px; color:var(--muted); margin:0 }
+footer { font-size:14px; color:var(--muted); display:flex; flex-direction:column; gap:6px }
+footer b { color:var(--ink) } footer a { color:inherit }
+.fixo { position:fixed; left:0; right:0; bottom:0; padding:10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); background:var(--card); border-top:1px solid var(--line); display:flex; justify-content:center }
+.fixo div { width:100%; max-width:720px; display:flex; align-items:center; justify-content:space-between; gap:12px }
+.fixo b { font:800 28px/1 "Barlow Condensed", Arial, sans-serif } .fixo b.t { color:var(--tomada) } .fixo b.b { color:var(--bomba) }
+.fixo span { font:600 16px "IBM Plex Mono", monospace; font-variant-numeric:tabular-nums }
+.fixo a { font:700 14px Barlow, Arial, sans-serif; color:var(--muted) }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="marca"><i></i><i></i>Tomada ou Bomba?</div>
+    <h1>Elétrico ou gasolina? <span class="t">Faz</span> a <span class="b">sua</span> conta</h1>
+    <p class="lead">A conta de 5 anos do vídeo, com os preços da sua cidade. Comece pelos preços, depois diga quanto você roda.</p>
+  </header>
+
+  <section class="card" aria-labelledby="p1">
+    <div class="passo" id="p1"><b>1</b><div>Os preços da sua cidade<small>Já vem com os de São Paulo. Troque pelos seus.</small></div></div>
+    <div class="campos">
+      <label class="campo"><span>Gasolina</span><span class="caixa"><i>R$</i><input id="gas" type="number" step="0.01" min="0" inputmode="decimal"><i>/litro</i></span></label>
+      <label class="campo"><span>Energia (conta de luz)</span><span class="caixa"><i>R$</i><input id="kwhp" type="number" step="0.01" min="0" inputmode="decimal"><i>/kWh</i></span></label>
+    </div>
+    <div>
+      <p class="dica">Onde você vai carregar?</p>
+      <div class="chips" role="group" aria-label="onde carrega">
+        <button type="button" data-kwh="1.10">Em casa · R$ 1,10</button>
+        <button type="button" data-kwh="0.25">Casa com placa solar</button>
+        <button type="button" data-kwh="2.00">Carregador da rua · R$ 2</button>
+      </div>
+    </div>
+    <div class="campos">
+      <label class="campo"><span>Seguro a mais do elétrico</span><span class="caixa"><i>R$</i><input id="seguro" type="number" step="50" min="0" inputmode="numeric"><i>/ano</i></span></label>
+      <label class="campo"><span>IPVA a mais do elétrico</span><span class="caixa"><i>R$</i><input id="ipva" type="number" step="50" inputmode="numeric"><i>/ano</i></span></label>
+    </div>
+    <p class="dica">Seguro: cote os dois carros com o seu perfil e ponha a diferença. IPVA: em SP o elétrico paga 4%, igual à gasolina (uns R$ 300 a mais por ano). Se o seu estado dá desconto pro elétrico, ponha o valor negativo.</p>
+  </section>
+
+  <section class="card km" aria-labelledby="p2">
+    <div class="passo" id="p2"><b>2</b><div>Quanto você roda por mês?</div></div>
+    <div class="linha"><output id="kmv">1.000</output><span class="u">km por mês</span></div>
+    <input type="range" id="km" min="200" max="5000" step="50" value="1000" aria-label="quilômetros por mês">
+    <div class="marcas"><span>200</span><span>2.500</span><span>5.000</span></div>
+  </section>
+
+  <section class="res b" id="res" aria-live="polite">
+    <small>Em <span id="anosT">5</span> anos, quem sai na frente</small>
+    <div class="ganha" id="ganha">BOMBA</div>
+    <div class="val" id="val">por R$ 22.600</div>
+    <p id="empate">Com esses preços, o elétrico compensa a partir de uns 2.000 km por mês.</p>
+  </section>
+
+  <section class="card">
+    <table class="conta"><tbody id="conta"></tbody></table>
+    <div class="acoes"><button type="button" id="copiar">Copiar meu resultado</button><button type="button" class="sec" id="zerar">Voltar aos números do vídeo</button></div>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>Outros números da conta</summary>
+      <div class="campos">
+        <label class="campo"><span>Consumo do carro a gasolina</span><span class="caixa"><input id="kml" type="number" step="0.1" min="1" inputmode="decimal"><i>km/l</i></span></label>
+        <label class="campo"><span>Consumo do elétrico</span><span class="caixa"><input id="kwh100" type="number" step="0.5" min="1" inputmode="decimal"><i>kWh/100 km</i></span></label>
+        <label class="campo"><span>Diferença na compra</span><span class="caixa"><i>R$</i><input id="compra" type="number" step="100" min="0" inputmode="numeric"></span></label>
+        <label class="campo"><span>Perda a mais na revenda</span><span class="caixa"><i>R$</i><input id="revenda" type="number" step="500" min="0" inputmode="numeric"></span></label>
+        <label class="campo"><span>Economia na oficina</span><span class="caixa"><i>R$</i><input id="oficina" type="number" step="50" inputmode="numeric"><i>/ano</i></span></label>
+        <label class="campo"><span>Fica com o carro por</span><span class="caixa"><input id="anos" type="number" step="1" min="1" max="15" inputmode="numeric"><i>anos</i></span></label>
+      </div>
+    </details>
+    <p class="nota">Ponto de partida: BYD Dolphin GS (R$ 149.990) × VW Polo Highline 1.0 TSI automático (R$ 138.690), preços de 2026. A revenda é uma estimativa a partir do que a tabela Fipe já mostrou.</p>
+  </section>
+
+  <footer>
+    <span><b>Tomada ou Bomba?</b> · o canal que faz a conta antes de você trocar de carro · <a href="https://www.youtube.com/@tomadaoubomba">youtube.com/@tomadaoubomba</a></span>
+    <span>É uma estimativa para ajudar a decidir, não uma recomendação de compra. Confira os valores com a seguradora, a Sefaz do seu estado e a concessionária.</span>
+  </footer>
+</main>
+<div class="fixo" aria-hidden="true"><div><span>Em <span id="fa">5</span> anos</span><b id="fg">BOMBA</b><span id="fv">+R$ 22.600</span></div></div>
+<script>
+const PADRAO = { km: 1000, kwhp: 1.10, gas: 6.52, kml: 12, kwh100: 15, compra: 11300, seguro: 2100, ipva: 300, oficina: 200, revenda: 23000, anos: 5 };
+const CAMPOS = ['gas', 'kwhp', 'seguro', 'ipva', 'kml', 'kwh100', 'compra', 'revenda', 'oficina', 'anos'];
+const $ = id => document.getElementById(id);
+const real = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
+const cent = v => 'R$ ' + v.toFixed(2).replace('.', ',');
+let s = { ...PADRAO };
+try { const g = JSON.parse(localStorage.getItem('tob-calc-01') || 'null'); if (g) s = { ...PADRAO, ...g }; } catch (e) {}
+function guardar() { try { localStorage.setItem('tob-calc-01', JSON.stringify(s)); } catch (e) {} }
+function chips() { document.querySelectorAll('.chips button').forEach(b => b.setAttribute('aria-pressed', String(Math.abs(+b.dataset.kwh - s.kwhp) < 0.001))); }
+function preencher() { $('km').value = s.km; CAMPOS.forEach(k => { $(k).value = (k === 'gas' || k === 'kwhp') ? (+s[k]).toFixed(2) : s[k]; }); chips(); }
+function calcular() {
+  const porKm = s.gas / s.kml - s.kwhp * s.kwh100 / 100;   // quanto cada km no elétrico economiza
+  const meses = s.anos * 12, economia = porKm * s.km * meses;
+  const extrasAno = s.seguro + s.ipva - s.oficina, extras = extrasAno * s.anos + s.compra + s.revenda;
+  const saldo = economia - extras, empate = porKm > 0 ? extras / (porKm * meses) : Infinity;
+  const empatou = Math.abs(saldo) < 500, t = saldo > 0, quem = empatou ? 'EMPATE' : t ? 'TOMADA' : 'BOMBA';
+  $('kmv').textContent = s.km.toLocaleString('pt-BR'); $('anosT').textContent = s.anos; $('fa').textContent = s.anos;
+  $('res').className = 'res ' + (t ? 't' : 'b');
+  $('ganha').textContent = quem; $('val').textContent = empatou ? 'diferença de menos de R$ 500' : 'por ' + real(Math.abs(saldo));
+  $('fg').textContent = quem; $('fg').className = t ? 't' : 'b'; $('fv').textContent = empatou ? '≈ R$ 0' : '+' + real(Math.abs(saldo));
+  $('empate').textContent = !isFinite(empate) || empate > 20000 ? 'Com esses preços, o elétrico não economiza por km: a bomba ganha em qualquer quilometragem.'
+    : 'Com esses preços, o elétrico compensa a partir de uns ' + (Math.round(empate / 50) * 50).toLocaleString('pt-BR') + ' km por mês.';
+  const linha = (rot, nota, v, cls) => `<tr><td>${rot}${nota ? `<small>${nota}</small>` : ''}</td><td class="${cls || ''}">${v}</td></tr>`;
+  $('conta').innerHTML =
+    linha('Cada km no elétrico economiza', `gasolina ${cent(s.gas / s.kml)}/km × energia ${cent(s.kwhp * s.kwh100 / 100)}/km`, cent(porKm), porKm >= 0 ? 'pos' : 'neg') +
+    linha('Economia por mês', `${s.km.toLocaleString('pt-BR')} km × ${cent(porKm)}`, real(porKm * s.km), 'pos') +
+    linha(`Economia em ${s.anos} anos`, `${meses} meses`, '+ ' + real(economia), 'pos') +
+    linha('Diferença na compra', '', '− ' + real(s.compra), 'neg') +
+    linha(`Seguro e IPVA a mais em ${s.anos} anos`, 'menos a economia na oficina', (extrasAno * s.anos >= 0 ? '− ' : '+ ') + real(Math.abs(extrasAno * s.anos)), extrasAno >= 0 ? 'neg' : 'pos') +
+    linha('Perda a mais na revenda', 'estimativa', '− ' + real(s.revenda), 'neg') +
+    `<tr class="tot"><td>Saldo do elétrico</td><td class="${t ? 'pos' : 'neg'}">${(saldo >= 0 ? '+ ' : '− ') + real(Math.abs(saldo))}</td></tr>`;
+}
+$('km').addEventListener('input', e => { s.km = +e.target.value; calcular(); guardar(); });
+document.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => { s.kwhp = +b.dataset.kwh; $('kwhp').value = s.kwhp.toFixed(2); chips(); calcular(); guardar(); }));
+CAMPOS.forEach(k => $(k).addEventListener('input', e => { const v = parseFloat(String(e.target.value).replace(',', '.')); if (isFinite(v)) { s[k] = k === 'anos' ? Math.max(1, Math.round(v)) : v; chips(); calcular(); guardar(); } }));
+$('zerar').addEventListener('click', () => { s = { ...PADRAO }; preencher(); calcular(); guardar(); });
+$('copiar').addEventListener('click', async e => {
+  const txt = `Fiz a conta na calculadora do Tomada ou Bomba: rodando ${s.km.toLocaleString('pt-BR')} km por mês, em ${s.anos} anos quem sai na frente é ${$('ganha').textContent} (${$('val').textContent}). ${$('empate').textContent}`;
+  try { await navigator.clipboard.writeText(txt); e.currentTarget.textContent = 'Copiado! Cola nos comentários'; } catch (er) { e.currentTarget.textContent = 'Não deu pra copiar'; }
+});
+preencher(); calcular();
+</script>
+</body>
+</html>
